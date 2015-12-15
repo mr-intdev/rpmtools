@@ -11,7 +11,7 @@ BUILD_CONF = json.loads(open(os.path.join(SOURCE_ROOT, 'BUILD.json')).read())
 PROJECT_NAME = BUILD_CONF['name']
 REVISION = BUILD_CONF['version']
 
-global_config_path = '/etc/{0}/{0}.conf'.format(PROJECT_NAME)
+global_config_path = '/etc/{0}/django.conf'.format(PROJECT_NAME)
 
 local_config_path = os.path.join(
     os.path.dirname(os.path.dirname(SOURCE_ROOT)), 'conf', '{0}.conf'.format(PROJECT_NAME)

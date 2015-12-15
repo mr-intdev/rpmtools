@@ -1,0 +1,14 @@
+{
+    "application_directory": "application",
+    "rpm_group": "Apps/sys",
+    "rpm_license": "proprietary",
+    "gunicorn_worker_class": "sync",
+    "celery": false,
+    "celerybeat": false,
+    "flower": false,
+    "celerycam": false,
+    "nginx": true,
+    "python_executable_path": "/usr/bin/python2.6",
+    "migrate_command": "syncdb --migrate --noinput",
+    "autoreq": 0
+}

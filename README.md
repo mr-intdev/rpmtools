@@ -1,4 +1,5 @@
-### rpmtools
+# rpmtools
+RPM Package Builder
 
 Этот репозиторий содержит скрипты/шаблоны, упрощающие создание rpm для Django-based проекта.
 
@@ -110,6 +111,3 @@ if $DEPLOY ; then
   echo "c6-intdev-x64" | nc pkg.corp.mail.ru 12222
 fi
 ```
-
-
-

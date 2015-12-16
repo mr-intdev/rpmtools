@@ -95,6 +95,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/{{name}}
 {% if nginx %}
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.conf %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.conf
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.listen %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.listen
+%{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.server_name %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.upstream %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.upstream
 {% endif %}
 
@@ -237,6 +238,7 @@ rm -rf %{buildroot}
 {% if nginx %}
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.conf
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.listen
+%config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.upstream
 {% endif %}
 

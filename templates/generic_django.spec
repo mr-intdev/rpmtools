@@ -103,7 +103,6 @@ rm -rf %{buildroot}%{__prefix}/{{name}}/src/default.conf
 
 # bin
 mkdir -p %{buildroot}%{_bindir}
-ln -s %{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{_bindir}/{{name}}
 
 rm -rf %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/
 
@@ -111,11 +110,10 @@ rm -rf %{buildroot}%{__prefix}/{{name}}/src/local_settings.py
 
 mkdir -p %{buildroot}/var/log/{{name}}
 mkdir -p %{buildroot}/var/run/{{name}}
-mkdir -p %{buildroot}%{__prefix}/{{name}}/media/
+mkdir -p %{buildroot}%{__prefix}/{{name}}/media
+mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
 
 %post
-
-chmod +x /usr/bin/{{name}}
 
 if [ $1 -gt 1 ]; then
     echo "Upgrade"
@@ -176,7 +174,13 @@ else
     # logs
     mkdir -p /var/log/{{name}}
 
+    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
+    ln -s %{__prefix}/{{name}}/bin/manage.sh %{_bindir}/{{name}}
+
+    chmod +x /usr/bin/{{name}}
+
     echo "1. fill configuration files in /etc/{{name}}/"
+    echo "2. edit python path in %{__prefix}/{{name}}/bin/manage.sh if needed"
 fi
 
 %preun
@@ -241,6 +245,8 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.upstream
 {% endif %}
+
+cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
 
 %{_bindir}/{{name}}
 

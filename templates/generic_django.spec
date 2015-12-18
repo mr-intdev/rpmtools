@@ -149,6 +149,8 @@ if [ $1 -gt 1 ]; then
 
         service {{name}}-gunicorn restart
 
+        cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
+
     fi
 else
     echo "Install"
@@ -175,7 +177,7 @@ else
     mkdir -p /var/log/{{name}}
 
     cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
-    ln -s %{__prefix}/{{name}}/bin/manage.sh %{_bindir}/{{name}}
+    ln -s %{__prefix}/{{name}}/bin/manage.sh /usr/bin/{{name}}
 
     chmod +x /usr/bin/{{name}}
 
@@ -245,8 +247,6 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.upstream
 {% endif %}
-
-cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
 
 %{_bindir}/{{name}}
 

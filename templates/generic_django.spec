@@ -113,6 +113,16 @@ mkdir -p %{buildroot}/var/run/{{name}}
 mkdir -p %{buildroot}%{__prefix}/{{name}}/media
 mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
 
+if [ -L %{buildroot}%{__prefix}/{{name}}/bin/{{name}} ]; then
+    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
+else
+    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
+    ln -s %{__prefix}/{{name}}/bin/manage.sh /usr/bin/{{name}}
+fi
+
+chmod +x /usr/bin/{{name}}
+
+
 %post
 
 if [ $1 -gt 1 ]; then
@@ -149,8 +159,6 @@ if [ $1 -gt 1 ]; then
 
         service {{name}}-gunicorn restart
 
-        cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
-
     fi
 else
     echo "Install"
@@ -175,11 +183,6 @@ else
 
     # logs
     mkdir -p /var/log/{{name}}
-
-    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
-    ln -s %{__prefix}/{{name}}/bin/manage.sh /usr/bin/{{name}}
-
-    chmod +x /usr/bin/{{name}}
 
     echo "1. fill configuration files in /etc/{{name}}/"
     echo "2. edit python path in %{__prefix}/{{name}}/bin/manage.sh if needed"

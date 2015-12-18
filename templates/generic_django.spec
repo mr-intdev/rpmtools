@@ -114,16 +114,16 @@ mkdir -p %{buildroot}%{__prefix}/{{name}}/media
 mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
 
 if [ -L %{buildroot}%{__prefix}/{{name}}/bin/{{name}} ]; then
-    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
+    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh.rpmnew
 else
-    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
-    ln -s %{__prefix}/{{name}}/bin/manage.sh /usr/bin/{{name}}
+    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh
+    ln -s %{__prefix}/{{name}}/bin/manage.sh %{buildroot}%{_bindir}/{{name}}
 fi
-
-chmod +x /usr/bin/{{name}}
 
 
 %post
+
+chmod +x /usr/bin/{{name}}
 
 if [ $1 -gt 1 ]; then
     echo "Upgrade"

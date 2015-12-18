@@ -114,9 +114,9 @@ mkdir -p %{buildroot}%{__prefix}/{{name}}/media
 mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
 
 if [ -f %{__prefix}/{{name}}/bin/manage.sh ]; then
-    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
+    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh.rpmnew
 else
-    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
+    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh
     ln -s %{__prefix}/{{name}}/bin/manage.sh %{buildroot}%{_bindir}/{{name}}
 fi
 

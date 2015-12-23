@@ -113,20 +113,13 @@ mkdir -p %{buildroot}/var/run/{{name}}
 mkdir -p %{buildroot}%{__prefix}/{{name}}/media
 mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
 
-if [ -f %{__prefix}/{{name}}/bin/manage.sh ]; then
-    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh.rpmnew
-else
-    cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{__prefix}/{{name}}/bin/manage.sh
-    ln -s %{__prefix}/{{name}}/bin/manage.sh %{buildroot}%{_bindir}/{{name}}
-fi
-
 
 %post
 
-chmod +x /usr/bin/{{name}}
-
 if [ $1 -gt 1 ]; then
     echo "Upgrade"
+
+    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
 
     # DB
     if {{name}} > /dev/null 2>&1; then
@@ -162,6 +155,10 @@ if [ $1 -gt 1 ]; then
     fi
 else
     echo "Install"
+
+    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
+    ln -s %{__prefix}/{{name}}/bin/manage.sh %{_bindir}/{{name}}
+    chmod +x %{_bindir}/{{name}}
 
     /sbin/chkconfig --list {{name}}-gunicorn > /dev/null 2>&1 || /sbin/chkconfig --add {{name}}-gunicorn
 

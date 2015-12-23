@@ -112,7 +112,7 @@ mkdir -p %{buildroot}/var/log/{{name}}
 mkdir -p %{buildroot}/var/run/{{name}}
 mkdir -p %{buildroot}%{__prefix}/{{name}}/media
 
-ln -s %{__prefix}/{{name}}/src/rpm-tools/manage.sh %{buildroot}%{_bindir}/{{name}}
+ln -s %{__prefix}/{{name}}/src/rpmtools/manage.sh %{buildroot}%{_bindir}/{{name}}
 
 
 %post

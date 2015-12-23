@@ -67,10 +67,6 @@ STATIC_URL = '/static/'
 
 SECRET_KEY = config.get("global", "SECRET_KEY")
 
-TEMPLATE_DIRS = (
-    os.path.join(SOURCE_ROOT, 'templates'),
-)
-
 RAVEN_CONFIG = {
     'dsn': config.get('sentry', 'SENTRY_DSN'),
 }

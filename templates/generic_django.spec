@@ -179,7 +179,6 @@ else
     mkdir -p /var/log/{{name}}
 
     echo "1. fill configuration files in /etc/{{name}}/"
-    echo "2. edit python path in %{__prefix}/{{name}}/bin/manage.sh if needed"
 fi
 
 %preun
@@ -250,3 +249,5 @@ rm -rf %{buildroot}
 /var/log/{{name}}/
 /var/run/{{name}}/
 %{__prefix}/{{name}}/media/
+
+%{_bindir}/{{name}}

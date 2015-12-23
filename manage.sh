@@ -3,7 +3,7 @@ BINARY="manage.py"
 VIRTUALENV_DIRECTORY="env"
 
 SELF_DIR=$(readlink "${0}"); [ -z ${SELF_DIR} ] && SELF_DIR=${0}
-SOURCE_ROOT=$(cd $(dirname "${SELF_DIR}"); pwd)
+SOURCE_ROOT=$(cd $(dirname "${SELF_DIR}"); pwd)/../src
 RESULT=false
 RETVAL=0
 

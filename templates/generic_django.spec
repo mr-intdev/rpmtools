@@ -35,13 +35,13 @@ mkdir -p {{name}}
 rsync -avrz --exclude 'env' --exclude '.git*' --exclude '.idea*' {{project_root}}/ {{name}}/src
 
 if [ -d {{project_root}}/env ]; then
-    virtualenv --relocatable --python={{python_executable_path}} {{project_root}}/env
+    virtualenv --relocatable --python={{python}} {{project_root}}/env
     cp -r {{project_root}}/env {{name}}/env
 else
-    virtualenv --distribute --python={{python_executable_path}} {{name}}/env
+    virtualenv --distribute --python={{python}} {{name}}/env
     {{name}}/env/bin/easy_install -U distribute
     {{name}}/env/bin/pip install -r {{name}}/src/requirements.txt --upgrade
-    virtualenv --relocatable --python={{python_executable_path}} {{name}}/env
+    virtualenv --relocatable --python={{python}} {{name}}/env
 fi
 
 {{name}}/env/bin/python {{project_root}}/manage.py collectstatic --noinput
@@ -78,6 +78,7 @@ mv {{name}} %{buildroot}%{__prefix}/
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/celerycam.initd.sh %{buildroot}%{_initrddir}/{{name}}-celerycam
 {% endif %}
 
+cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/manage.sh %{buildroot}%{__prefix}/{{name}}/src/rpmtools/manage.sh
 
 
 # configs
@@ -105,21 +106,21 @@ rm -rf %{buildroot}%{__prefix}/{{name}}/src/default.conf
 mkdir -p %{buildroot}%{_bindir}
 
 rm -rf %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/
-
 rm -rf %{buildroot}%{__prefix}/{{name}}/src/local_settings.py
 
 mkdir -p %{buildroot}/var/log/{{name}}
 mkdir -p %{buildroot}/var/run/{{name}}
 mkdir -p %{buildroot}%{__prefix}/{{name}}/media
-mkdir -p %{buildroot}%{__prefix}/{{name}}/bin
+
+ln -s %{__prefix}/{{name}}/src/rpm-tools/manage.sh %{buildroot}%{_bindir}/{{name}}
 
 
 %post
 
+chmod +x %{_bindir}/{{name}}
+
 if [ $1 -gt 1 ]; then
     echo "Upgrade"
-
-    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh.rpmnew
 
     # DB
     if {{name}} > /dev/null 2>&1; then
@@ -155,10 +156,6 @@ if [ $1 -gt 1 ]; then
     fi
 else
     echo "Install"
-
-    cp %{__prefix}/{{name}}/src/rpmtools/manage.sh %{__prefix}/{{name}}/bin/manage.sh
-    ln -s %{__prefix}/{{name}}/bin/manage.sh %{_bindir}/{{name}}
-    chmod +x %{_bindir}/{{name}}
 
     /sbin/chkconfig --list {{name}}-gunicorn > /dev/null 2>&1 || /sbin/chkconfig --add {{name}}-gunicorn
 
@@ -253,4 +250,3 @@ rm -rf %{buildroot}
 /var/log/{{name}}/
 /var/run/{{name}}/
 %{__prefix}/{{name}}/media/
-%{__prefix}/{{name}}/bin/

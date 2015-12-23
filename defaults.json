@@ -8,7 +8,7 @@
     "flower": false,
     "celerycam": false,
     "nginx": true,
-    "python_executable_path": "/usr/bin/python2.6",
     "migrate_command": "syncdb --migrate --noinput",
-    "autoreq": 0
+    "autoreq": 0,
+    "python": "python2.7"
 }

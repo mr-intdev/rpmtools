@@ -3,7 +3,7 @@ BINARY="manage.py"
 VIRTUALENV_DIRECTORY="env"
 
 SELF_DIR=$(readlink "${0}"); [ -z ${SELF_DIR} ] && SELF_DIR=${0}
-SOURCE_ROOT=$(cd $(dirname "${SELF_DIR}"); pwd)/../src
+SOURCE_ROOT=$(cd $(dirname "${SELF_DIR}"); pwd)
 RESULT=false
 RETVAL=0
 
@@ -17,7 +17,8 @@ if $RESULT; then
     PROJECT_ROOT=$(dirname "${SOURCE_ROOT}")
     ENV_ROOT=${PROJECT_ROOT}/${VIRTUALENV_DIRECTORY}
 
-    ${ENV_ROOT}/bin/python ${SOURCE_ROOT}/manage.py $@
+    PYTHONPATH=${ENV_ROOT}/lib/{{python}}/site-packages
+    {{python}} ${SOURCE_ROOT}/manage.py $@
 else
     echo "Error: ${BINARY} not found" >&2
     RETVAL=1

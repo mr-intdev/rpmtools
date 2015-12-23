@@ -248,8 +248,6 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.upstream
 {% endif %}
 
-%{_bindir}/{{name}}
-
 %defattr(-,{{name}},{{name}})
 
 /var/log/{{name}}/

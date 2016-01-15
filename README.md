@@ -8,7 +8,7 @@ RPM Package Builder
 Внутри корневой директории проекта:
 
 ```bash
-git submodule add https://github.com/mailru-intdev/rpmtools.git
+git submodule add https://github.com/mr-intdev/rpmtools.git
 touch BUILD.json
 ```
 

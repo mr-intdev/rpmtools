@@ -26,7 +26,7 @@ bin="/usr/bin/${name} celery beat"
 cmd_start="start"
 cmd_stop="killproc -p ${pidfile} ${prog} -QUIT"
 cmd_restart="restart"
-opts="-A {{application_directory}} -l INFO --pidfile=${pidfile} --logfile=/var/log/${name}/celerybeat.log --uid=$(id -u ${name}) --gid=$(id -g ${name}) --detach"
+opts="-A {{application_directory}} -s /tmp/${name}-celerybeat-schedule -l INFO --pidfile=${pidfile} --logfile=/var/log/${name}/celerybeat.log --uid=$(id -u ${name}) --gid=$(id -g ${name}) --detach"
 
 RETVAL=0
 

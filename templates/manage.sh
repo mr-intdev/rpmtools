@@ -18,6 +18,7 @@ if $RESULT; then
     ENV_ROOT=${PROJECT_ROOT}/${VIRTUALENV_DIRECTORY}
 
     PYTHONPATH=${ENV_ROOT}/lib/{{python}}/site-packages {{python}} ${SOURCE_ROOT}/manage.py $@
+    RETVAL=$?
 else
     echo "Error: ${BINARY} not found" >&2
     RETVAL=1

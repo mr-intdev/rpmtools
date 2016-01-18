@@ -98,6 +98,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/{{name}}
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.listen %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.listen
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.server_name %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.upstream %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.upstream
+%{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.media %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.media
 {% endif %}
 
 rm -rf %{buildroot}%{__prefix}/{{name}}/src/default.conf
@@ -249,6 +250,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.listen
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.server_name
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.upstream
+%config(noreplace) %{_sysconfdir}/nginx/conf.d/{{name}}.media
 {% endif %}
 
 %defattr(-,{{name}},{{name}})

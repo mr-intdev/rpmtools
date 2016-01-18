@@ -127,29 +127,29 @@ if [ $1 -gt 1 ]; then
         {{name}} {{migrate_command}}
 
         {% if celery %}
-        CHECK_CELERYD=$(chkconfig {{name}}-celeryd --level 3)
-        if [ -z "$CHECK_CELERYD" ]; then
+        CHECK_CELERYD=$(chkconfig {{name}}-celeryd --level 3 && echo "it's on")
+        if [ -n "$CHECK_CELERYD" ]; then
             service {{name}}-celeryd restart
         fi
         {% endif %}
 
         {% if celerybeat %}
-        CHECK_CELERYBEAT=$(chkconfig {{name}}-celerybeat --level 3)
-	    if [ -z "$CHECK_CELERYBEAT" ]; then
+        CHECK_CELERYBEAT=$(chkconfig {{name}}-celerybeat --level 3 && echo "it's on")
+	    if [ -n "$CHECK_CELERYBEAT" ]; then
             service {{name}}-celerybeat restart
         fi
         {% endif %}
 
         {% if flower %}
-        CHECK_FLOWER=$(chkconfig {{name}}-flower --level 3)
-        if [ -z "$CHECK_FLOWER" ]; then
+        CHECK_FLOWER=$(chkconfig {{name}}-flower --level 3 && echo "it's on")
+        if [ -n "$CHECK_FLOWER" ]; then
             service {{name}}-flower restart
         fi
         {% endif %}
 
         {% if celerycam %}
-        CHECK_CELERYCAM=$(chkconfig {{name}}-celerycam --level 3)
-        if [ -z "$CHECK_CELERYCAM" ]; then
+        CHECK_CELERYCAM=$(chkconfig {{name}}-celerycam --level 3 && echo "it's on")
+        if [ -n "$CHECK_CELERYCAM" ]; then
             service {{name}}-celerycam restart
         fi
         {% endif %}

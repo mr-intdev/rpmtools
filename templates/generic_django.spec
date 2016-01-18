@@ -126,26 +126,29 @@ if [ $1 -gt 1 ]; then
     if {{name}} > /dev/null 2>&1; then
         {{name}} {{migrate_command}}
 
-        CHECK_CELERYD=$(chkconfig --list {{name}}-celeryd | grep "$(runlevel | cut -f2 -d' '):off")
-        CHECK_CELERYBEAT=$(chkconfig --list {{name}}-celerybeat | grep "$(runlevel | cut -f2 -d' '):off")
-
+        {% if celery %}
+        CHECK_CELERYD=$(chkconfig {{name}}-celeryd --level 3)
         if [ -z "$CHECK_CELERYD" ]; then
             service {{name}}-celeryd restart
         fi
+        {% endif %}
 
+        {% if celerybeat %}
+        CHECK_CELERYBEAT=$(chkconfig {{name}}-celerybeat --level 3)
 	    if [ -z "$CHECK_CELERYBEAT" ]; then
             service {{name}}-celerybeat restart
         fi
+        {% endif %}
 
         {% if flower %}
-        CHECK_FLOWER=$(chkconfig --list {{name}}-flower | grep "$(runlevel | cut -f2 -d' '):off")
+        CHECK_FLOWER=$(chkconfig {{name}}-flower --level 3)
         if [ -z "$CHECK_FLOWER" ]; then
             service {{name}}-flower restart
         fi
         {% endif %}
 
         {% if celerycam %}
-        CHECK_CELERYCAM=$(chkconfig --list {{name}}-celerycam | grep "$(runlevel | cut -f2 -d' '):off")
+        CHECK_CELERYCAM=$(chkconfig {{name}}-celerycam --level 3)
         if [ -z "$CHECK_CELERYCAM" ]; then
             service {{name}}-celerycam restart
         fi
@@ -165,6 +168,7 @@ else
 
     {% if celerybeat %}
     /sbin/chkconfig --list {{name}}-celerybeat > /dev/null 2>&1 || /sbin/chkconfig --add {{name}}-celerybeat
+    /sbin/chkconfig {{name}}-celerybeat off
     {% endif %}
 
     {% if flower %}
@@ -173,12 +177,15 @@ else
 
     {% if celerycam %}
     /sbin/chkconfig --list {{name}}-celerycam > /dev/null 2>&1 || /sbin/chkconfig --add {{name}}-celerycam
+    /sbin/chkconfig {{name}}-celerycam off
     {% endif %}
 
     # logs
     mkdir -p /var/log/{{name}}
 
     echo "1. fill configuration files in /etc/{{name}}/"
+    echo "2. edit chkconfig configuration if needed"
+    echo "3. start services"
 fi
 
 %preun

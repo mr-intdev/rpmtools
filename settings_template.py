@@ -1,12 +1,18 @@
+# coding: utf-8
+
 import os
 import sys
 import json
 from ConfigParser import RawConfigParser
 
+
 SOURCE_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-BUILD_CONF = json.loads(open(os.path.join(SOURCE_ROOT, 'BUILD.json')).read())
+RPMTOOLS_CONF_DIR = 'deploy'
+RPMTOOLS_CONF = 'BUILD.json'
+
+BUILD_CONF = json.loads(open(os.path.join(SOURCE_ROOT, RPMTOOLS_CONF_DIR, RPMTOOLS_CONF)).read())
 
 PROJECT_NAME = BUILD_CONF['name']
 REVISION = BUILD_CONF['version']

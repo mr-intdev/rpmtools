@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+
 import os
 import sys
 import json
@@ -43,7 +44,6 @@ class Release(object):
     template_dir_name = 'templates'
     compiled_template_dir_name = 'compiled_templates'
     defaults_file_name = 'defaults.json'
-    settings_file_name = 'BUILD.json'
 
     required_config_keys = [
         "name", "version", "summary", "requires", "build_requires"
@@ -85,7 +85,7 @@ class Release(object):
         return os.path.join(self.builder_dir_name, self.defaults_file_name)
 
     def get_settings_file_path(self):
-        return os.path.join(self.project_root, self.settings_file_name)
+        return os.path.join(self.project_root, settings.RPMTOOLS_CONF_DIR, settings.RPMTOOLS_CONF)
 
     @staticmethod
     def out(data):
@@ -110,6 +110,13 @@ class Release(object):
     def get_settings_dict(self):
         return self.load_json_from_file(self.settings_file_path)
 
+    def get_nginx_dict(self):
+        nginx_server_path = os.path.join(self.project_root, settings.RPMTOOLS_CONF_DIR, 'nginx_server_extra')
+        server_string = open(nginx_server_path, 'r').read()
+        return {
+            'nginx_server_extra': server_string
+        }
+
     def set_settings_dict(self, data):
         return self.dump_json_into_file(self.settings_file_path, data)
 
@@ -118,7 +125,7 @@ class Release(object):
         if missing_keys:
             raise Exception(
                 "missing parameters in {0} file: {1}".format(
-                    self.settings_file_name, ", ".join(missing_keys)
+                    settings.RPMTOOLS_CONF, ", ".join(missing_keys)
                 )
             )
 
@@ -126,6 +133,7 @@ class Release(object):
         config = {}
         config.update(self.get_defaults_dict())
         config.update(self.get_settings_dict())
+        config.update(self.get_nginx_dict())
         config["project_root"] = self.project_root
         config["release"] = str(int(time.time()))
         config["package_name"] = config.get("package_name", config["name"])
@@ -156,9 +164,6 @@ class Release(object):
         Compile templates - create new directory with templates with actual
         values instead of placeholders
         """
-        self._compile()
-
-    def _compile(self):
         if self._compiled:
             return
         config = self.get_config()
@@ -170,10 +175,6 @@ class Release(object):
         """
         Create RPM for project
         """
-        self._build()
-
-    def _build(self):
-
         self.compile()
 
         # run building rpm based on compiled spec via process call to rpmbuild
@@ -197,9 +198,6 @@ class Release(object):
         Automatically increment project version, finalize CHANGELOG, create tag for new release,
         and push all into remote origin repository.
         """
-        return self._deploy()
-
-    def _deploy(self):
         build_config = self.get_settings_dict()
         current_version = build_config['version']
         self.out('current version {0}'.format(current_version))

@@ -83,7 +83,7 @@ cp %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/manage.sh %{
 
 # configs
 mkdir -p %{buildroot}%{_sysconfdir}/{{name}}
-%{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/default.conf %{buildroot}%{_sysconfdir}/{{name}}/django.conf
+%{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/deploy/default.conf %{buildroot}%{_sysconfdir}/{{name}}/django.conf
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/gunicorn.conf %{buildroot}%{_sysconfdir}/{{name}}/gunicorn.conf
 {% if flower %}
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/flower.conf %{buildroot}%{_sysconfdir}/{{name}}/flower.conf
@@ -101,7 +101,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/{{name}}
 %{__install} -p -D -m 0755 %{buildroot}%{__prefix}/{{name}}/src/rpmtools/compiled_templates/nginx.media %{buildroot}%{_sysconfdir}/nginx/conf.d/{{name}}.media
 {% endif %}
 
-rm -rf %{buildroot}%{__prefix}/{{name}}/src/default.conf
+rm -rf %{buildroot}%{__prefix}/{{name}}/src/deploy/default.conf
 
 # bin
 mkdir -p %{buildroot}%{_bindir}

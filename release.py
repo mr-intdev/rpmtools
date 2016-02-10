@@ -11,6 +11,8 @@ from optparse import OptionParser
 from django.template.base import Template, Context
 from django.conf import settings
 
+from settings_template import RPMTOOLS_CONF, RPMTOOLS_CONF_DIR
+
 
 settings.configure()
 
@@ -85,7 +87,7 @@ class Release(object):
         return os.path.join(self.builder_dir_name, self.defaults_file_name)
 
     def get_settings_file_path(self):
-        return os.path.join(self.project_root, settings.RPMTOOLS_CONF_DIR, settings.RPMTOOLS_CONF)
+        return os.path.join(self.project_root, RPMTOOLS_CONF_DIR, RPMTOOLS_CONF)
 
     @staticmethod
     def out(data):
@@ -111,7 +113,7 @@ class Release(object):
         return self.load_json_from_file(self.settings_file_path)
 
     def get_nginx_dict(self):
-        nginx_server_path = os.path.join(self.project_root, settings.RPMTOOLS_CONF_DIR, 'nginx_server_extra')
+        nginx_server_path = os.path.join(self.project_root, RPMTOOLS_CONF_DIR, 'nginx_server_extra')
         server_string = open(nginx_server_path, 'r').read()
         return {
             'nginx_server_extra': server_string
@@ -125,7 +127,7 @@ class Release(object):
         if missing_keys:
             raise Exception(
                 "missing parameters in {0} file: {1}".format(
-                    settings.RPMTOOLS_CONF, ", ".join(missing_keys)
+                    RPMTOOLS_CONF, ", ".join(missing_keys)
                 )
             )
 
